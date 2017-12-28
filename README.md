@@ -1,37 +1,20 @@
-# Android_boot_image_editor
+# Android boot.img tool
 [![Build Status](https://travis-ci.org/cfig/Android_boot_image_editor.svg?branch=master)](https://travis-ci.org/cfig/Android_boot_image_editor)
 [![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
+[中文快速说明](https://github.com/cfig/Android_boot_image_editor/blob/dev/short.md) 
+
 This tool focuses on editing Android boot.img(also recovery.img and recovery-two-step.img).
-
-## Prerequisite
-#### Host OS requirement:
-
-Linux or Mac.
-
-#### Target Android requirement:
-
-(1) Targeted boot.img(or recovery.img / recovery-two-step.img) MUST follows AOSP [verified boot flow](https://source.android.com/security/verifiedboot/index.html), which means it packs linux kernel, rootfs , and a optional second state bootloader, then sign it with OEM/USER keys.
-
-(2) These utilities are known to work for Nexus (or Nexus compatible) boot.img(or recovery.img/recovery-two-step.img) for the following Android releases:
-
- - AOSP master
- - Lollipop (API Level 21,22) - Oreo (API Level 26,27)
-
-You can get a full [Android version list](https://source.android.com/source/build-numbers.html) here.
+It has been tested on Linux or Mac.
 
 ## Usage
-Get tools via git:
 
-    git clone https://github.com/cfig/Android_boot_image_editor.git
-    cd Android_boot_image_editor
+### unpack
 
-Then put your boot.img at **$(CURDIR)/boot.img**, then start gradle 'unpack' task:
-
-    cp <original_boot_image> boot.img
+    cp <your_boot_image> boot.img
     ./gradew unpack
 
-Your get the flattened kernel and /root filesystem under **$(CURDIR)/build/unzip\_boot**:
+Your get the flattened kernel and /root under **build/unzip\_boot**:
 
     build/unzip_boot/
     ├── bootimg.json
@@ -39,14 +22,11 @@ Your get the flattened kernel and /root filesystem under **$(CURDIR)/build/unzip
     ├── second
     └── root
 
-Then you can edit the actual file contents, like rootfs or kernel.
-Now, pack the boot.img again
+### pack
 
     ./gradew pack
 
-You get the repacked boot.img at $(CURDIR):
-
-    boot.img.signed
+The repacked file is **boot.img.signed**
 
 #### If you are working with recovery.img
 If you are working with recovery.img, the steps are similar:
@@ -56,6 +36,14 @@ If you are working with recovery.img, the steps are similar:
     ./gradew pack
 
 And you get recovery.img.signed
+
+## Requirements
+
+(1) Targeted boot.img MUST follows AOSP [verified boot flow](https://source.android.com/security/verifiedboot/index.html), which means it packs linux kernel, rootfs , and a optional second state bootloader, then sign it with OEM/USER keys.
+
+(2) These utilities are known to work for Nexus (or Nexus compatible) boot.img for the following Android releases:
+
+ - Lollipop (API Level 21,22) to Oreo (API Level 26,27)
 
 
 ## example & test
